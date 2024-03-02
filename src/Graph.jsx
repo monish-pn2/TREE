@@ -108,10 +108,15 @@ const Graph = () => {
     }, []);
 
     return (
-        <svg ref={svgRef} style={{ width: '2000px', height: '100vh' }}>
-            {/* SVG elements will be rendered here */}
-        </svg>
+        <div style={{ width: '100%', height: '100vh', position: 'relative' }}>
+            <svg ref={svgRef} style={{ position: 'absolute', width: '100%', height: '100%' }}>
+                {/* SVG elements will be rendered here */}
+            </svg>
+        </div>
     );
 };
 
 export default Graph;
+
+
+
