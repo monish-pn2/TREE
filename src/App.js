@@ -1,15 +1,13 @@
 import React from 'react';
-import Graph from './mailGraph';
-//import Check from './check'; // Importing the Check component
+import ProjectDetails from './ProjectDetails';
+import jsonData from './jsonData'; // Assuming you have the JSON data in a file named jsonData.js
 
-function App() {
-  return (
-    <div className="App">
-      {/* <h1>Graph Visualization</h1> */}
-       {/* Rendering the Check component */}
-      <Graph />
-    </div>
-  );
-}
+const App = () => {
+    return (
+        <div className="App">
+            <ProjectDetails data={jsonData} />
+        </div>
+    );
+};
 
 export default App;
