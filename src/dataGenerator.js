@@ -1,4 +1,4 @@
-export function generateGraphData(nodes) {
+export function MESH(nodes) {
     const links = [];
     for (let i = 0; i < nodes.length; i++) {
         for (let j = 0; j < nodes.length; j++) {
@@ -9,3 +9,16 @@ export function generateGraphData(nodes) {
     }
     return { nodes, links };
 }
+
+
+export function dirct(nodes) {
+    const links = [];
+    for (let i = 1; i < nodes.length; i++) {
+
+        links.push({ "source": nodes[0].id, "target": nodes[i].id });
+        
+    }
+    return { nodes, links };
+}
+
+

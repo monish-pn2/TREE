@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { generateGraphData } from './dataGenerator';
+import { MESH } from './dataGenerator';
 
 const Graph = () => {
     const svgRef = useRef(null);
@@ -33,7 +33,7 @@ const Graph = () => {
             {"id": "Home"}
         ];
 
-        const { nodes: graphNodes, links } = generateGraphData(nodes);
+        const { nodes: graphNodes, links } = MESH(nodes);
 
         const svg = d3.select(svgRef.current)
             .attr("width", 600)
