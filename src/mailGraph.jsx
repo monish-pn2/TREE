@@ -1,55 +1,32 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-import { MESH } from './dataGenerator';
 import { getRegisteredPlatforms } from './check';
+import { MESH } from './dataGenerator'; // Import the direct function
 import jsonData from './check.json';
 
-const Graph = () => {
+const MailGraph = () => {
     const svgRef = useRef(null);
 
     useEffect(() => {
-        const nodes = [
-            {"id": "MAIN"},
-            {"id": "Anti-Ragging Helpline"},
-            {"id": "Information Under MSR Clause B.1.11 (NMC)"},
-            {"id": "Notification"},
-            {"id": "Results"},
-            {"id": "Admission 2022"},
-            {"id": "About Us"},
-            {"id": "Chairman"},
-            {"id": "Executive Director"},
-            {"id": "Principal & Dean"},
-            {"id": "Medical Superintendent"},
-            {"id": "Undergraduate"},
-            {"id": "Postgraduate"},
-            {"id": "Super Speciality"},
-            {"id": "GOVT APPROVAL"},
-            {"id": "CAMPUS LIFE"},
-            {"id": "DEPARTMENT"},
-            {"id": "ALUMNI"},
-            {"id": "Publications"},
-            {"id": "Academic Activities / CME / Workshops"},
-            {"id": "SIMS Drug Formulary"},
-            {"id": "CONTACT"},
-            {"id": "READ MORE"},
-            {"id": "Home"}
-        ];
-
         const registeredPlatforms = getRegisteredPlatforms(jsonData);
-        console.log("Platforms with registered status as true:");
-        console.log(registeredPlatforms);
 
-        const { nodes: graphNodes, links } = MESH(nodes);
+        const { nodes, links } = MESH([{ id: "EMAIL" }, ...registeredPlatforms.map(platform => ({ id: platform }))]);
+
+        console.log("Nodes with EMAIL as root:");
+        console.log(nodes);
+
+        console.log("Links:");
+        console.log(links);
 
         const svg = d3.select(svgRef.current)
             .attr("width", 600)
             .attr("height", 400)
             .style("overflow", "auto");
 
-        const simulation = d3.forceSimulation(graphNodes)
-            .force("link", d3.forceLink(links).id(d => d.id).distance(0))
-            .force("charge", d3.forceManyBody().strength(-2000))
-            .force("center", d3.forceCenter(window.innerWidth / 2, window.innerHeight / 2))
+        const simulation = d3.forceSimulation(nodes)
+            .force("link", d3.forceLink(links).id(d => d.id))
+            .force("charge", d3.forceManyBody().strength(-3000))
+            .force("center", d3.forceCenter(500, 200))
             .force("collision", d3.forceCollide().radius(30));
 
         const link = svg.append("g")
@@ -62,7 +39,7 @@ const Graph = () => {
 
         const node = svg.append("g")
             .selectAll("g")
-            .data(graphNodes)
+            .data(nodes)
             .enter().append("g")
             .call(d3.drag()
                 .on("start", dragstarted)
@@ -70,15 +47,12 @@ const Graph = () => {
                 .on("end", dragended));
 
         node.append("circle")
-            .attr("r", d => d.id === "MAIN" ? 15 : 10)
-            .attr("fill", d => d.id === "MAIN" ? "red" : "#1f77b4");
+            .attr("r", 10)
+            .attr("fill", d => d.id === "EMAIL" ? "red" : "#1f77b4");
 
         node.append("text")
             .attr("dx", 12)
             .attr("dy", ".35em")
-            .text(d => d.id);
-
-        node.append("title")
             .text(d => d.id);
 
         simulation.on("tick", () => {
@@ -122,7 +96,4 @@ const Graph = () => {
     );
 };
 
-export default Graph;
-
-
-
+export default MailGraph;
